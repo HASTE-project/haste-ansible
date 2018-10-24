@@ -1,0 +1,45 @@
+- name: Add mongo ppa key
+  become: yes
+  apt_key: >
+    keyserver=hkp://keyserver.ubuntu.com:80
+    id=9DA31620334BD75D9DCB49F368818C72E52529D4
+    state=present
+
+- name: Add mongo sources list (Bionic/18)
+  become: yes
+  lineinfile: >
+    line="deb http://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse"
+    dest=/etc/apt/sources.list.d/mongodb-4.0.list
+    state=present
+    create=yes
+
+- name: Install mongodb
+  become: yes
+  apt: name=mongodb-org state=latest update_cache=yes
+
+
+#By default, MongoDB instance stores:
+#its data files in /var/lib/mongodb
+#its log files in /var/log/mongodb
+#/etc/mongod.conf
+
+- name: mongod config
+  become: true
+  template:
+    src: mongod.conf.j2
+    dest: /etc/mongod.conf
+    notify:
+     - restart mongodb
+
+- name: start mongodb
+  become: true
+  service:
+    name: mongod
+    state: started
+
+handlers:
+  - name: restart mongodb
+    become: true
+    service:
+      name: mongod
+      state: restarted

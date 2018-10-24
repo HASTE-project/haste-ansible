@@ -1,0 +1,16 @@
+
+# Note: Bastion servers need to have this setup manually - Ansible won't be able to figure out the IP addresses until it can SSH in,
+# and to SSH in via a Bastion server requires that server to have the hosts setup - it needs to be 'bootstraped' manually.
+
+# From: https://github.com/HASTE-project/HarmonicIOSetup/blob/master/playbooks/setHostnames.yml
+- name: "Build hosts file"
+  become: yes
+  # 'regexp' is pattern to match to line to replace, 'line' is what the line should look like
+  lineinfile: dest=/etc/hosts regexp='.*\s{{ item }}$' line="{{ hostvars[item].ansible_default_ipv4.address }} {{item}}" state=present
+  with_items:
+    - "{{groups['all']}}"
+
+
+- name: set hostname
+  become: yes
+  hostname: name="{{inventory_hostname}}"

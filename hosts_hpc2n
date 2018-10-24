@@ -1,0 +1,16 @@
+# HPC2N
+
+
+# Ensure that SSH configuration and IP addresses are configured (in `~/.ssh/config` and/or `/etc/hosts`) first.
+
+metadata-db-prod
+
+[metadata-server]
+metadata-db-prod
+
+[autoconfiguration-server]
+metadata-db-prod
+
+[all:vars]
+# Needed for Ubuntu hosts
+ansible_python_interpreter=/usr/bin/python3

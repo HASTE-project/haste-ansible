@@ -1,0 +1,11 @@
+- hosts: all
+  roles:
+    - common
+
+#- hosts: ben-kafka-server
+#  roles:
+#    - kafka-server
+
+- hosts: metadata-db-prod
+  roles:
+     - metadata-server
