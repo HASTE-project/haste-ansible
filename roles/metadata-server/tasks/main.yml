@@ -53,8 +53,23 @@
     executable: pip3
     name: pymongo
 
-- mongodb_user:
-    database: admin
-    name: admin
-    password: "{{ enc.mongodbadminuser }}"
+# Note: we need to temporarily disable authentication so we can get in and add the first user! (see Readme)
+#- name: Create MongoDB adminstrator. (this fails when auth is turned on)
+#  mongodb_user:
+#    database: admin
+#    name: "{{ enc.mongodb_admin_username }}"
+#    password: "{{ enc.mongodb_admin_password }}"
+#    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+#    state: present
+
+# Now we use the credentials we just created to setup the other users:
+- name: Create MongoDB user
+  mongodb_user:
+    login_database: admin
+    login_user: "{{ enc.mongodb_admin_username }}"
+    login_password: "{{ enc.mongodb_admin_password }}"
+    database: streams
+    name: "{{ enc.mongodb_user_username }}"
+    password: "{{ enc.mongodb_user_password }}"
     state: present
+    roles: [ { role: "readWrite", db: "streams" } ]
