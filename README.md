@@ -10,6 +10,7 @@ Ensure that SSH configuration and IP addresses are configured (in `~/.ssh/config
 NOTE for the Metadata Server: MongoDB authentication needs to be turned *off* to add the users, then 
 needs to be turned back on again. See mongodb.conf.j2
 
+Instructions for deploying the auto-configuration service are found in that repo.
 
 For HPC2N use -i hosts_hpc2n
 

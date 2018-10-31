@@ -35,6 +35,7 @@
   service:
     name: mongod
     state: restarted
+    enabled: true # run on startup
 # If this fails, check: $ journalctl -u mongod
 
 - name: include creds from encrypted dir
