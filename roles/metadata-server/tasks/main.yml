@@ -28,18 +28,33 @@
   template:
     src: mongod.conf.j2
     dest: /etc/mongod.conf
-    notify:
-     - restart mongodb
 
-- name: start mongodb
+# TODO: restart only in case of config change
+- name: restart mongodb
   become: true
   service:
     name: mongod
-    state: started
+    state: restarted
+# If this fails, check: $ journalctl -u mongod
 
-handlers:
-  - name: restart mongodb
-    become: true
-    service:
-      name: mongod
-      state: restarted
+- name: include creds from encrypted dir
+  include_vars:
+    file: enc/vars-hpc2n.yml
+    name: enc
+
+- name: install python3 pip (needed to install pymongo)
+  become: true
+  package:
+    name: python3-pip
+    update-cache: yes
+
+- name: Install pymongo (needed for 'mongodb_user')
+  pip:
+    executable: pip3
+    name: pymongo
+
+- mongodb_user:
+    database: admin
+    name: admin
+    password: "{{ enc.mongodbadminuser }}"
+    state: present
