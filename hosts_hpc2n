@@ -3,7 +3,23 @@
 
 # Ensure that SSH configuration and IP addresses are configured (in `~/.ssh/config` and/or `/etc/hosts`) first.
 
+
 metadata-db-prod
+
+# These hosts are included only so that we can set up /etc/hosts.
+hio-prod
+hio-worker-prod-0-1
+hio-worker-prod-0-2
+hio-worker-prod-0-3
+hio-worker-prod-0-4
+hio-worker-prod-0-5
+hio-worker-prod-0-6
+hio-worker-prod-0-7
+hio-worker-prod-0-8
+hio-worker-prod-0-9
+hio-worker-prod-0-10
+lovisainstance
+
 
 [metadata-server]
 metadata-db-prod
