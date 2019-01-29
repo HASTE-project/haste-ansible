@@ -11,6 +11,10 @@
      - metadata-server
 
 
+- hosts: hio-workers
+  roles:
+     - hio-worker
+
 - hosts: haste-gateway.benblamey.com
   roles:
      - gateway
