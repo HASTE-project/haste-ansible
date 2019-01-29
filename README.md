@@ -45,6 +45,6 @@ ansible -i hosts_hpc2n haste-gateway.benblamey.com -a "echo hi"
 ansible-playbook -i hosts_hpc2n --limit haste-gateway.benblamey.com site.yml --check
 
 # Deploy on a single machine:
-ansible-playbook -i hosts_hpc2n --limit haste-gateway.benblamey.com site.yml --check
+ansible-playbook -i hosts_hpc2n --limit haste-gateway.benblamey.com site.yml
 
 ```

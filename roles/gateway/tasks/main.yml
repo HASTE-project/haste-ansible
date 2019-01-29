@@ -73,3 +73,25 @@
     state: started
     published_ports: 80:8080
     restart_policy: unless-stopped
+
+
+# https://github.com/v2tec/watchtower
+
+- name: gateway container image
+  become: yes
+  docker_image:
+    name: v2tec/watchtower
+
+
+# docker run -d --name watchtower -v /var/run/docker.sock:/var/run/docker.sock v2tec/watchtower
+# Note: can't set params -- see https://groups.google.com/forum/#!topic/ansible-project/DXCg-2drIIE
+
+- name: watchtower container
+  become: yes
+  docker_container:
+    name: watchtower
+    image: v2tec/watchtower
+    state: started
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart_policy: unless-stopped
