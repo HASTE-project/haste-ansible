@@ -32,3 +32,19 @@ ansible-playbook -i hosts_hpc2n site.yml
 
 
 Contributors: Ben Blamey
+
+
+
+```
+Other snippets:
+
+# Echo on a single host:
+ansible -i hosts_hpc2n haste-gateway.benblamey.com -a "echo hi"
+
+# Check on a single machine:
+ansible-playbook -i hosts_hpc2n --limit haste-gateway.benblamey.com site.yml --check
+
+# Deploy on a single machine:
+ansible-playbook -i hosts_hpc2n --limit haste-gateway.benblamey.com site.yml --check
+
+```

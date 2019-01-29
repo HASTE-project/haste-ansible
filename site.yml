@@ -9,3 +9,8 @@
 - hosts: metadata-db-prod
   roles:
      - metadata-server
+
+
+- hosts: haste-gateway.benblamey.com
+  roles:
+     - gateway

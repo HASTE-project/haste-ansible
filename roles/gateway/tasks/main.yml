@@ -1,0 +1,75 @@
+
+- name: "Install python 3 and update repositories"
+  become: yes
+  apt:
+    name: python3
+    update_cache: yes
+
+#- name: "Install pip3"
+#  become: yes
+#  apt:
+#    name: python3-pip
+#    update_cache: yes
+#
+#- name: "Install docker-py"
+#  pip:
+#    executable: pip3
+#    name: docker-py
+#
+#- name: "Install docker-py"
+#  pip:
+#    executable: pip3
+#    name: docker
+
+# This seems to be the only way to get docker + python 3 + ansible working. Its broken in a bunch of ways!
+# see e.g.: https://github.com/ansible/ansible/issues/37640
+- name: "install python docker"
+  become: yes
+  apt: name=python3-docker
+
+
+# Install Docker
+
+- name: "ensure repository key is installed"
+  become: yes
+  apt_key:
+    id: "58118E89F3A912897C070ADBF76221572C52609D"
+    keyserver: "hkp://p80.pool.sks-keyservers.net:80"
+    state: present
+
+- name: "ensure docker registry is available"
+  become: yes
+  # For Ubuntu 14.04 LTS, use this repository:
+  # apt_repository: repo='deb https://apt.dockerproject.org/repo ubuntu-trusty main' state=present
+  # For Ubuntu 16.04 LTS, use this repo instead:
+  # apt_repository: repo='deb https://apt.dockerproject.org/repo ubuntu-xenial main' state=present
+  # For Ubuntu 18.04 LTS, use this repo  (bionic doesn't exist:
+  apt_repository: repo='deb https://apt.dockerproject.org/repo ubuntu-xenial main' state=present
+
+- name: "ensure docker and dependencies are installed"
+  become: yes
+  apt: name=docker-engine update_cache=yes
+
+- name: "start docker service"
+  become: yes
+  service:
+    name: docker
+    state: restarted
+
+
+
+#sudo docker run -d --name haste_gateway -p 80:8080/tcp --restart unless-stopped benblamey/haste-gateway:latest
+
+- name: gateway container image
+  become: yes
+  docker_image:
+    name: benblamey/haste-gateway:latest
+
+- name: gateway container
+  become: yes
+  docker_container:
+    name: haste_gateway
+    image: benblamey/haste-gateway:latest
+    state: started
+    published_ports: 80:8080
+    restart_policy: unless-stopped

@@ -21,6 +21,8 @@ hio-worker-prod-0-10
 lovisainstance
 
 
+haste-gateway.benblamey.com
+
 [metadata-server]
 metadata-db-prod
 
